@@ -18,8 +18,11 @@ const GoogleSignIn = () => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log('User Info:', userInfo);
-      //@ts-ignore
-      Alert.alert('Success', `Welcome ${userInfo.user.name}`);
+      Alert.alert(
+        'Success',
+        // @ts-ignore
+        `Welcome ${userInfo.user || userInfo.data?.user}`,
+      );
     } catch (error: any) {
       console.log('Sign in error:', error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -29,7 +32,7 @@ const GoogleSignIn = () => {
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         Alert.alert('Error', 'Google Play Services not available');
       } else {
-        Alert.alert('Error', 'Something went wrong');
+        Alert.alert('Error', `Something went wrong ${error.message}`);
       }
     }
   };
